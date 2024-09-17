@@ -1,4 +1,4 @@
-# TWITTIE
+<!-- # TWITTIE
 
 Twittie is a already responsive web app which let you share photos and your beloved moments with friend. It is made by using React Js + Context API + Firebase Firestore and proposed as a clone for [twitter.com](https://twitter.com). Kindly please watch out my [demo](https://www.youtube.com/watch?v=64P6-439q8A&t=21s) or go to the deployed url [here](https://twittie-59f54.firebaseapp.com/).
 
@@ -97,4 +97,4 @@ Twittie is a already responsive web app which let you share photos and your belo
 
 
 
-Copyright © 2020 by Hafidz Nugroho
+Copyright © 2020 by Hafidz Nugroho -->
