@@ -66,16 +66,17 @@ const Login = () => {
                     'Content-Type': 'application/json',
                 },
 
-                body: JSON.stringify({ username:email, password }),
+                body: JSON.stringify({ email, password }),
                 // body:{ email, password },
             });
-            console.log(response);
+
 
             const result = await response.json();
+            console.log(result);
             
 
             if (response.ok) {
-                auths(result.user);
+                auths(result.data.user);
             } else {
                 setError(result.message || 'Invalid credentials');
                 setLoading(false);

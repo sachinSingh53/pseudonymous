@@ -26,7 +26,6 @@ const Login = () => {
     const [loginState, setLoginState] = useState(initialLogin)
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
-
     const [isSigning, setIsSigning] = useState(false)
 
     const cleanupState = () => {
@@ -46,11 +45,7 @@ const Login = () => {
     const auths = (user) => {
         try {
             user.password = undefined
-            // const user1 = {
-            //     username:'sachin_53',
-            //     password:"Admin@123",
-            //     email:'test@test.com'
-            // }
+           
             localStorage.setItem('twittie_user', JSON.stringify(user))
             
             dispatch({
