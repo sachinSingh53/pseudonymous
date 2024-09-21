@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import TweetBox from '../TweetBox/TweetBox';
+import TweetBox from '../TweetBox/TweetBox1';
 import Posts from '../Posts/Posts';
 import { Avatar } from '@material-ui/core';
 import Loader from '../../elements/Loader/Loader';

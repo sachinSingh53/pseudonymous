@@ -19,17 +19,25 @@ model User{
   email String @unique()
   name String 
   password String
+  following Int[]
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 }
 
+//  altText     : altText,
+//             text        : tweetMessage,
+//             image       : '',
+//             likes       : [],
+//             senderId    : user.id,
+//             timestamp   : firebase.firestore.FieldValue.serverTimestamp()
+
 model Post{
   id Int @default(autoincrement()) @id
-  user_id Int @unique()
-  body String
-  attachments String[]
+  text String 
+  image String
   likes Int[]
-  // comments Int[]
+  senderId Int
+  // timestamp
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 }
