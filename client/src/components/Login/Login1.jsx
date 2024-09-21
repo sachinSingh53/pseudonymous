@@ -20,6 +20,7 @@ const Login = () => {
         password: ''
     };
     const [{ user }, dispatch] = useStateValue();
+    const [token,setToken] = useState();
     const [signupState, setSignupState] = useState(initialSignup);
     const [loginState, setLoginState] = useState(initialLogin);
     const [error, setError] = useState('');
@@ -39,9 +40,11 @@ const Login = () => {
         cleanupState();
     };
 
-    const auths = (user) => {
+    const auths = (user,token) => {
         try {
             localStorage.setItem('twittie_user', JSON.stringify(user));
+            localStorage.setItem('access_token',token);
+            setToken(token);
             dispatch({
                 type: actionTypes.SET_USER,
                 user: JSON.parse(localStorage.getItem('twittie_user'))
@@ -76,7 +79,7 @@ const Login = () => {
             
 
             if (response.ok) {
-                auths(result.data.user);
+                auths(result.data.user,result.token);
             } else {
                 setError(result.message || 'Invalid credentials');
                 setLoading(false);

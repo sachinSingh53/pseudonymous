@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react'
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
 import Sidebar from './components/Sidebar/Sidebar'
-import Feed from './components/Feed/Feed'
+import Feed from './components/Feed/Feed1'
 import Widgets from './components/Widgets/Widgets'
 import SidebarChat from './components/SidebarChat/SidebarChat'
 import Chat from './components/Chat/Chat'
