@@ -21,8 +21,8 @@ const Feed = () => {
         axios.get(`/users/${user.id}`)
             .then(response => {
                 if (mounted) {
-                    setProfile(response.data);
-                    setFollowing(response.data.following || []);
+                    setProfile(response.data.user);
+                    setFollowing(response.data.user.following || []);
                 }
             })
             .catch(error => console.error('Error fetching profile:', error));
@@ -35,22 +35,26 @@ const Feed = () => {
         setLoading(true);
 
         const fetchPosts = async () => {
-            let url;
-            if (following && following.length > 0) {
-                const followingIds = [user.id, ...following];
-                url = `/posts?senderIds=${JSON.stringify(followingIds)}`;
-            } else {
-                url = `/posts?senderIds=${JSON.stringify([user.id])}`;
-            }
+            // let url;
+           
 
             try {
-                const response = await axios.get(url);
+                let response;
+                if (following && following.length > 0) {
+                    const followingIds = [user.id, ...following];
+                    response = await axios.post('/post/feed',followingIds);
+
+                } else {
+                    // url = `/posts?senderIds=${JSON.stringify([user.id])}`;
+                    response = await axios.post('/post/feed', [user.id]);
+                }
+                // const response = await axios.get(url);
                 if (mounted) {
                     if (response.data.length === 0) {
                         setLoading(false);
                         return;
                     }
-                    setPosts(response.data);
+                    setPosts(response.data.posts);
                     setLoading(false);
                 }
             } catch (error) {
@@ -75,6 +79,7 @@ const Feed = () => {
             <TweetBox />
 
             {loading && <div className="feed__loader"><Loader /></div>}
+            
 
             <Posts posts={posts} />
         </div>

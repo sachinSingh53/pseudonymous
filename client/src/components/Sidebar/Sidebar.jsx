@@ -42,7 +42,7 @@ const Sidebar = () => {
               <span>Tweet</span>
            </button>
 
-           <SidebarAccount />
+           {/* <SidebarAccount /> */}
            
         </div>
     )

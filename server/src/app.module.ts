@@ -7,7 +7,11 @@ import { AuthModule } from './1-auth/auth.module';
 import configuration from 'config/configuration';
 import { PrismaModule } from './prisma/prisma.module';
 import { JwtModule } from '@nestjs/jwt';
-import { PostModule } from './2-post/post.module';
+
+import { UserModule } from './2-user/user.module';
+
+import { PostModule } from './3-post/post.module';
+
 
 @Module({
   imports: [/*PrismaModule */
@@ -19,7 +23,8 @@ import { PostModule } from './2-post/post.module';
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: '1h' },
     }),
-    PostModule,
+    UserModule,
+    PostModule
     ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,9 +1,9 @@
 import React  from 'react'
 import FlipMove from 'react-flip-move'
-import Post from '../Post/Post'
+import Post from '../Post/Post1'
 
 const Posts = ({posts}) => {
-
+    console.log({posts})
     return (
         <>
         <FlipMove>
@@ -17,7 +17,7 @@ const Posts = ({posts}) => {
                         text = {post.text}
                         avatar = {post.avatar}
                         image = {post.image}
-                        timestamp = {post.timestamp}
+                        creaated_at = {post.created_at}
                         likes = {post.likes}
             />
             ))

@@ -40,7 +40,7 @@ const App = () => {
       user?
       <Router>  
         <div className="app__mainContent">
-          {/* <Sidebar /> */}
+          <Sidebar />
           <Switch>
             <Route exact path='/'>
                 <div className="app__main">
