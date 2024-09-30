@@ -1,11 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { postDTO } from './dto';
 
 @Injectable()
 export class PostService {
     constructor(
         private prismaService:PrismaService
     ){}
+
+    createPost(data:postDTO){
+        return this.prismaService.post.create({
+            data
+        })
+    }
 
     findPostByID(id:number){
         return this.prismaService.post.findUnique({

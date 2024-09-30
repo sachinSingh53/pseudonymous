@@ -38,6 +38,7 @@ model Post{
   image String
   likes Int[]
   senderId Int
+  altText String
   // timestamp
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt

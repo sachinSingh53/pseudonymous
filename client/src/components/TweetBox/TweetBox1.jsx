@@ -57,10 +57,11 @@ const TweetBox = () => {
             postToCloudinary(imageToSend)
                 .then(res => {
                     // Send tweet with image
-                    axios.post('/posts', {
+                    console.log({res});
+                    axios.post('/post', {
                         altText: altText,
                         text: tweetMessage,
-                        image: res.url,  // Assuming Cloudinary response includes URL
+                        image: res,  // Assuming Cloudinary response includes URL
                         likes: [],
                         senderId: user.id,
                         created_at: new Date().toISOString(),
@@ -77,7 +78,7 @@ const TweetBox = () => {
                 });
         } else {
             // Send tweet without image
-            axios.post('/posts', {
+            axios.post('/post', {
                 altText: altText,
                 text: tweetMessage,
                 image: '',
@@ -174,56 +175,57 @@ const TweetBox = () => {
 
     return (
         <>
-            <Modal
-                open={isOpenModal}
-                onClose={() => setIsOpenModal(false)}
-                title="Edit Photo"
-                callback={callbackforModal}
-                Icon={ArrowBackOutlinedIcon}
-                ButtonText='Save'
-            >
-                <TabbarMenu items={items} />
+
+            <Modal  open={isOpenModal} 
+                    onClose={()=>setIsOpenModal(false)}
+                    title="Edit Photo"
+                    callback = {callbackforModal}
+                    Icon = {ArrowBackOutlinedIcon}
+                    ButtonText='Save'
+                    >
+                    <TabbarMenu items={items}/>
             </Modal>
 
             <div className='tweetBox'>
                 <form onSubmit={sendTweet}>
-                    <div className='tweetBox__wrapperInput'>
-                        
+                    <div className='tweetBox__wrapperInput' >
                         <div className="tweetBox__ava">
-                           
                             <Avatar src={profile && profile.user.dp} />   
                         </div>
 
                         <div className='tweetBox__input'>
-                            <textarea
-                                rows='1' 
-                                placeholder="What's happening"
-                                value={tweetMessage}
-                                onChange={e => setTweetMessage(e.target.value)}
-                            />
 
-                            {src && (
-                                <div className='tweetBox__input-image'>
-                                    <CancelIcon className='cancelIcon' onClick={() => setSrc(null)} />
-                                    <img src={src} alt="new" />
-                                    <Button className='editImage' onClick={() => setIsOpenModal(true)}>Edit</Button>
-                                </div>
-                            )}
+                            <textarea rows='1' 
+                                      placeholder="What's happening"
+                                      type        = 'text' 
+                                      value       = {tweetMessage}
+                                      onChange    = {e=> setTweetMessage(e.target.value)}                            
+                            >
+                            </textarea>
+
+                            {
+                                src &&
+                                    <div className='tweetBox__input-image'>
+                                        <CancelIcon className='cancelIcon' onClick={()=>setSrc(null)}/>
+                                        <img src={src} alt="new test"/>               
+                                        <Button className='editImage' onClick={()=>setIsOpenModal(true)}>Edit</Button>
+                                    </div>                        
+                            }
 
                             <div className='tweetBox__input-actions'>
                                 <div className='tweetBox__input-icons'>
-                                    <StatusInput
-                                        Icon={ImageOutlinedIcon}
-                                        type="file"
-                                        accept="image/*"
-                                        onChange={onSelectFile}
+                                   <StatusInput Icon={ImageOutlinedIcon}
+                                                type="file"
+                                                accept="image/*"
+                                                name="image-upload"
+                                                id="input-image"
+                                                onChange={onSelectFile}
                                     />
-                                    <StatusInput Icon={GifOutlinedIcon} />
-                                    <StatusInput Icon={EqualizerOutlinedIcon} />
-                                    <StatusInput
-                                        Icon={SentimentSatisfiedOutlinedIcon}
-                                        onClick={onClickEmoticon}
-                                    />
+                                   <StatusInput Icon={GifOutlinedIcon}/>
+                                   <StatusInput Icon={EqualizerOutlinedIcon} />
+                                   <StatusInput Icon={SentimentSatisfiedOutlinedIcon} 
+                                                aria-describedby={id} type="button" onClick={onClickEmoticon} 
+                                   />
 
                                     <Popover 
                                         id={id}
@@ -238,24 +240,29 @@ const TweetBox = () => {
                                             vertical: 'top',
                                             horizontal: 'center',
                                         }}
+
+                                    style={{borderRadius: '2rem'}}
                                     >
                                         <Picker onEmojiClick={onEmojiClick} />
                                     </Popover>
 
-                                    <StatusInput Icon={EventNoteSharpIcon} />
+                                   <StatusInput Icon={EventNoteSharpIcon} />
                                 </div>
-
-                                {isLoading
-                                    ? <Button className='tweetBox__tweetButton'><Spinner /></Button>
-                                    : <Button type='submit' className='tweetBox__tweetButton'>Tweet</Button>
+                    
+                                {
+                                    isLoading ?
+                                    <Button className='tweetBox__tweetButton'><Spinner /></Button>
+                                    :
+                                    <Button type='submit'className='tweetBox__tweetButton'>Tweet</Button>
                                 }
+
                             </div>
-                        </div>
+                        </div>    
                     </div>
                 </form>
             </div>
         </>
-    );
+    )
 };
 
 export default TweetBox;
