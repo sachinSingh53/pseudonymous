@@ -170,6 +170,8 @@ const TweetBox = () => {
         }
     }, []);
 
+
+
     return (
         <>
             <Modal
@@ -186,8 +188,10 @@ const TweetBox = () => {
             <div className='tweetBox'>
                 <form onSubmit={sendTweet}>
                     <div className='tweetBox__wrapperInput'>
+                        
                         <div className="tweetBox__ava">
-                            <Avatar src={profile && profile.photoURL} />   
+                           
+                            <Avatar src={profile && profile.user.dp} />   
                         </div>
 
                         <div className='tweetBox__input'>

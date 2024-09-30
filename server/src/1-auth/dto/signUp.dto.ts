@@ -10,7 +10,13 @@ export class signUpDTO {
     @IsEmail()
     @IsNotEmpty()
     email: string;
+
+
+    @IsEmpty()
+    dp:string;
     
+
+
     @IsStrongPassword()
     password:string;
   }

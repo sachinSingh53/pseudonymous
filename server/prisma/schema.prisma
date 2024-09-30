@@ -19,6 +19,7 @@ model User{
   email String @unique()
   name String 
   password String
+  dp String ?
   following Int[]
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt

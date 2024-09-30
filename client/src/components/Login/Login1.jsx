@@ -43,7 +43,8 @@ const Login = () => {
     const auths = (user,token) => {
         try {
             localStorage.setItem('twittie_user', JSON.stringify(user));
-            localStorage.setItem('access_token',token);
+            // localStorage.setItem('access_token',token);
+            sessionStorage.setItem('access_token', token);
             setToken(token);
             dispatch({
                 type: actionTypes.SET_USER,
