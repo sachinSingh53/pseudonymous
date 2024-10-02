@@ -1,5 +1,6 @@
 import firebase from 'firebase'
 import db from '../firebase'
+import axios from '../axios'
 
 export const follow = (userId, followId) => {
     const userRef = db.collection('users').doc(userId)
@@ -27,23 +28,38 @@ export const unfollow = (userId, followId) => {
     })  
 }
 
-export const deletePost = (postId) => {
-    const postRef = db.collection('posts').doc(postId)
-    postRef.delete()
+export const deletePost = async (postId) => {
+    try {
+        await axios.delete(`/post/${postId}`);
+    } catch (error) {
+        console.error('Error deleting post:', error);
+    }
+};
+
+
+export const like = async(postId, userId) => {
+    // const postRef = db.collection('posts').doc(postId)
+    // postRef.update({
+    //     likes: firebase.firestore.FieldValue.arrayUnion(userId)
+    // })
+    try{
+        await axios.put('post/like-post',{userId,postId});
+    }catch (error) {
+        console.error('Error liking post:', error);
+    }
 }
 
-export const like = (postId, userId) => {
-    const postRef = db.collection('posts').doc(postId)
-    postRef.update({
-        likes: firebase.firestore.FieldValue.arrayUnion(userId)
-    })
-}
+export const unlike = async(postId, userId) => {
+    // const postRef = db.collection('posts').doc(postId)
+    // postRef.update({
+    //     likes: firebase.firestore.FieldValue.arrayRemove(userId)
+    // })
 
-export const unlike = (postId, userId) => {
-    const postRef = db.collection('posts').doc(postId)
-    postRef.update({
-        likes: firebase.firestore.FieldValue.arrayRemove(userId)
-    })
+    try{
+        await axios.put('post/unlike-post',{userId,postId});
+    }catch (error) {
+        console.error('Error unliking post:', error);
+    }
 }
 
 export const deleteComment = (postId, commentId) => {

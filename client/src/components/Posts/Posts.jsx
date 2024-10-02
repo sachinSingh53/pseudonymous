@@ -12,7 +12,7 @@ const Posts = ({posts}) => {
                 <Post key={post.id}
                         postId = {post.id}
                         altText = {post.altText}
-                        senderId = {post.senderId}
+                        senderId = {post.sender_id}
                         username = {post.username}
                         text = {post.text}
                         avatar = {post.avatar}

@@ -1,6 +1,6 @@
 import { IsArray, IsEmail, IsEmpty, IsNotEmpty, IsNumber, IsString, IsStrongPassword } from "class-validator";
 
-export class postDTO {
+export class commentDTO {
     @IsString()
     altText:string
 

@@ -190,7 +190,7 @@ const TweetBox = () => {
                 <form onSubmit={sendTweet}>
                     <div className='tweetBox__wrapperInput' >
                         <div className="tweetBox__ava">
-                            <Avatar src={profile && profile.user.dp} />   
+                            <Avatar src={profile && profile.user.photoURL} />   
                         </div>
 
                         <div className='tweetBox__input'>

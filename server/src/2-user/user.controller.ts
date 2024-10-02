@@ -16,6 +16,6 @@ export class UserController {
     async getById(@Param('id', ParseIntPipe) id:number){
         const user = await this.userService.getUserByID(id);
         delete user.password
-        return decamelizeKeys({user})
+        return ({user})
     }
 }

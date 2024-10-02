@@ -3,7 +3,7 @@ import { Avatar } from '@material-ui/core';
 import { useHistory } from 'react-router';
 
 import FooterIcon from './FooterIcon';
-import Reply from '../Reply/Reply';
+import Reply from '../Reply/Reply1';
 import Like from './Like';
 import Popover from '@material-ui/core/Popover';
 import Modal from '../../elements/Modal/Modal';
@@ -38,7 +38,8 @@ const Post = forwardRef(({
   created_at,
   senderId,
   postId,
-  likes
+  likes,
+  setPosts
 }, ref) => {
 
   const history = useHistory();
@@ -68,10 +69,11 @@ const Post = forwardRef(({
     const fetchProfiles = async () => {
       try {
         const ownProfileRes = await axios.get(`/users/${user.id}`);
-        setOwnProfile({ id: user.id, ...ownProfileRes.data });
-
+        
+        setOwnProfile({ id: user.id, ...ownProfileRes.data.user });
         const senderProfileRes = await axios.get(`/users/${senderId}`);
-        setProfile(senderProfileRes.data);
+        console.log({senderProfileRes})
+        setProfile(senderProfileRes.data.user);
       } catch (error) {
         console.error('Error fetching profile data:', error);
       }
@@ -84,8 +86,8 @@ const Post = forwardRef(({
   useEffect(() => {
     const fetchComments = async () => {
       try {
-        const response = await axios.get(`/posts/${postId}/comments`);
-        setComments(response.data);
+        const response = await axios.get(`/post/${postId}/comments`);
+        setComments(response.data.comments);
       } catch (error) {
         console.error('Error fetching comments:', error);
       }
@@ -164,6 +166,7 @@ const Post = forwardRef(({
               >
                 <ul className="post__expandList">
                   {
+                    
                     senderId === user.id ?
                       <>
                         <li onClick={() => deletePost(postId)}>
