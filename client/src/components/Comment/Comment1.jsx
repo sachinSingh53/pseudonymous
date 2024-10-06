@@ -33,7 +33,7 @@ const Comment = forwardRef(({
   commentAltText,
   text,
   image,
-  timestamp,
+  created_at,
   senderId,
   commentId,
   likes,
@@ -41,7 +41,8 @@ const Comment = forwardRef(({
 }, ref) => {
   const history = useHistory();
   const { postId } = useParams();
-  const date = convertTimestampToLocaleString(timestamp);
+
+  // const date = convertTimestampToLocaleString(timestamp);
 
   const [anchorEl, setAnchorEl] = useState(null);
   const onClickExpand = (event) => setAnchorEl(event.currentTarget);
@@ -64,30 +65,31 @@ const Comment = forwardRef(({
 
   const [isFollowing, setIsFollowing] = useState(false);
 
+
   // Fetching own profile, sender profile, thread comments, and original post
   useEffect(() => {
     let mounted = true;
 
     // Fetch user's own profile from the external backend
-    axios.get(`/api/users/${user.id}`)
+    axios.get(`/users/${user.id}`)
       .then(response => {
         if (mounted) {
-          setOwnProfile(response.data);
+          setOwnProfile(response.data.user);
         }
       })
       .catch(error => console.error(error));
 
     // Fetch the sender's profile
-    axios.get(`/api/users/${senderId}`)
+    axios.get(`/users/${senderId}`)
       .then(response => {
         if (mounted) {
-          setProfile(response.data);
+          setProfile(response.data.user);
         }
       })
       .catch(error => console.error(error));
 
     // Fetch comments from the external backend
-    axios.get(`/api/posts/${postId}/comments/${commentId}/thread`)
+    axios.get(`/post/${postId}/comments/${commentId}/thread`)
       .then(response => {
         if (mounted) {
           setThreadComments(response.data);
@@ -96,7 +98,7 @@ const Comment = forwardRef(({
       .catch(error => console.error(error));
 
     // Fetch original post
-    axios.get(`/api/posts/${postId}`)
+    axios.get(`/post/${postId}`)
       .then(response => {
         if (mounted) {
           setOriginalPost(response.data);
@@ -111,7 +113,7 @@ const Comment = forwardRef(({
     let mounted = true;
 
     if (originalPost) {
-      axios.get(`/api/users/${originalPost.senderId}`)
+      axios.get(`/users/${originalPost.senderId}`)
         .then(response => {
           if (mounted) {
             setOriginalPostSender(response.data);
@@ -122,9 +124,9 @@ const Comment = forwardRef(({
 
     return () => mounted = false;
   }, [originalPost]);
-
+  console.log({profile})
   useEffect(() => {
-    if (profile) {
+    if (profile.length) {
       setIsFollowing(profile.followers.includes(user.id));
     }
   }, [profile, user.id]);
@@ -144,7 +146,7 @@ const Comment = forwardRef(({
         <ReplyComment props={{
           threadAlttext: commentAltText,
           image,
-          timestamp,
+          created_at,
           senderId,
           commentId,
           likes
@@ -166,7 +168,7 @@ const Comment = forwardRef(({
               <h3>{displayName} {' '}
                 <span className='post__headerSpecial'>
                   {verified && <VerifiedUserIcon className='post__badge' />}
-                  @{`${username} . ${timestamp && util.timeDiff(date)}`}
+                  @{`${username} . ${created_at && util.timeDiff(created_at)}`}
                 </span>
               </h3>
               <div className="post__headerExpandIcon" aria-describedby={id} variant="contained" onClick={onClickExpand}>

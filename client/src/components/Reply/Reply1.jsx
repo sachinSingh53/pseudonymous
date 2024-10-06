@@ -203,7 +203,7 @@ const Reply = ({ props, profile, ownProfile, setIsOpenParentModal }) => {
                                 </div>
                                 {image.length > 0 && <img src={image} alt={altText} />}
                                 <span className="replyingTo">
-                                    Replying to <p>{`@${username}`}</p>
+                                    Replying To <p>{`@${username}`}</p>
                                 </span>
                             </div>
                         </TimelineContent>

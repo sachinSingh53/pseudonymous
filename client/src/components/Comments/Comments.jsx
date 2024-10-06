@@ -11,12 +11,12 @@ const Comments = ({comments, statusUsername}) => {
                 <Comment key={comment.id}
                         commentId = {comment.id}
                         commentAltText = {comment.commentAltText}
-                        senderId = {comment.senderId}
+                        senderId = {comment.sender_id}
                         username = {comment.username}
                         text = {comment.text}
-                        avatar = {comment.avatar}
+                        // avatar = {comment.avatar}
                         image = {comment.image}
-                        timestamp = {comment.timestamp}
+                        created_at = {comment.created_at}
                         likes = {comment.likes}
                         statusUsername = {statusUsername}
                 />

@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
-import axios from 'axios';
+import axios from '../../axios';
 import Popover from '@material-ui/core/Popover';
 import FooterIcon from '../Post/FooterIcon';
 import Like from '../Post/Like';
-import Reply from '../Reply/Reply';
+import Reply from '../Reply/Reply1';
 import Modal from '../../elements/Modal/Modal';
 import { Avatar } from '@material-ui/core';
 import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
@@ -25,7 +25,6 @@ import CloseIcon from '@material-ui/icons/Close';
 import { like, unlike, follow, unfollow, deletePost } from '../../server/serverActions';
 import { useStateValue } from '../../contexts/StateContextProvider';
 import util from '../../helpers/timeDifference';
-import { convertTimestampToLocaleString } from '../../helpers/convertTimestampToLocaleString';
 
 const StatusPost = ({ status, comments }) => {
   const { postId } = useParams();
@@ -40,8 +39,10 @@ const StatusPost = ({ status, comments }) => {
     following: []
   });
   const { displayName, username, photoURL, verified } = profile;
-  const { altText, text, image, timestamp, senderId, likes } = status;
-  const date = convertTimestampToLocaleString(timestamp);
+  const { altText, text, image, created_at, sender_id, likes } = status;
+  // const date = convertTimestampToLocaleString(timestamp);
+  console.log({status})
+  
   const history = useHistory();
 
   const [isOpenModal, setIsOpenModal] = useState(false);
@@ -57,9 +58,11 @@ const StatusPost = ({ status, comments }) => {
     let mounted = true;
     const fetchProfile = async () => {
       try {
-        const response = await axios.get(`/api/users/${senderId}`);
+        const response = await axios.get(`/users/${sender_id}`);
         if (mounted) {
-          setProfile(response.data);
+
+          setProfile(response.data.user);
+
         }
       } catch (error) {
         console.error('Error fetching user profile:', error);
@@ -67,7 +70,9 @@ const StatusPost = ({ status, comments }) => {
     };
     fetchProfile();
     return () => (mounted = false);
-  }, [senderId]);
+  }, [sender_id]);
+
+
 
   useEffect(() => {
     if (profile) {
@@ -79,7 +84,7 @@ const StatusPost = ({ status, comments }) => {
 
   const deleteMyPost = async () => {
     try {
-      await axios.delete(`/api/post/${postId}`);
+      await axios.delete(`/post/${postId}`);
       history.push('/');
     } catch (error) {
       console.error('Error deleting post:', error);
@@ -88,7 +93,7 @@ const StatusPost = ({ status, comments }) => {
 
   const followUser = async () => {
     try {
-      await axios.post(`/api/users/${senderId}/follow`, { userId: user.id });
+      await axios.post(`/users/${sender_id}/follow`, { userId: user.id });
       setIsFollowing(true);
     } catch (error) {
       console.error('Error following user:', error);
@@ -97,12 +102,13 @@ const StatusPost = ({ status, comments }) => {
 
   const unfollowUser = async () => {
     try {
-      await axios.post(`/api/users/${senderId}/unfollow`, { userId: user.id });
+      await axios.post(`/users/${sender_id}/unfollow`, { userId: user.id });
       setIsFollowing(false);
     } catch (error) {
       console.error('Error unfollowing user:', error);
     }
   };
+
 
   const setIsOpenParentModal = (state) => setIsOpenModal(state);
 
@@ -121,8 +127,8 @@ const StatusPost = ({ status, comments }) => {
             altText,
             text,
             image,
-            timestamp,
-            senderId,
+            created_at,
+            sender_id,
             postId,
             likes
           }}
@@ -173,7 +179,7 @@ const StatusPost = ({ status, comments }) => {
                   }}
                 >
                   <ul className="post__expandList">
-                    {senderId === user.id ? (
+                    {sender_id === user.id ? (
                       <>
                         <li onClick={deleteMyPost}>
                           <div className="delete">
@@ -253,7 +259,7 @@ const StatusPost = ({ status, comments }) => {
         <div className="statusPost__body">
           <div className="statusPost__body--message">{text}</div>
           {image && <img src={image} alt={altText} />}
-          <div className="statusPost__body--date">{timestamp && util.timeDiff(date)}</div>
+          <div className="statusPost__body--date">{created_at && util.timeDiff(created_at)}</div>
         </div>
 
         <div className="statusPost__footer">

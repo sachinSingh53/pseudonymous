@@ -223,7 +223,7 @@ const ReplyComment = ({props, profile, ownProfile, setIsOpenParentModal, origina
                                 <div className="post__headerDescription"> <p> {text} </p></div>
                             </div>
                             { image.length>0 && <img src={image} alt={altText}/> }
-                            <span className='replyingTo'>Replying to <p>{`@${username} @${originalPostSender && originalPostSender.username}`}</p></span>
+                            <span className='replyingTo'>Replying to  <p>{`@${username} @${originalPostSender && originalPostSender.username}`}</p></span>
                         </div>
                     </TimelineContent>
                 </TimelineItem>

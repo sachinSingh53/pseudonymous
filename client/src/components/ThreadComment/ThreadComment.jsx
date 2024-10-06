@@ -134,7 +134,7 @@ const ThreadComment = forwardRef(({
                   </div>
 
                   {statusUsername && <div className="post__replyingTo">
-                     Replying To 
+                     Replying To  
                      <Link to={`/profile/${statusUsername}`}>{`@${statusUsername} `}</Link>
                      <Link to={`/profile/${originalPostUsername}`}>{`@${originalPostUsername}`}</Link>
                   </div>}
