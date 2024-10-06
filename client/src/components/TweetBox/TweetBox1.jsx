@@ -23,7 +23,7 @@ import GifOutlinedIcon from '@material-ui/icons/GifOutlined';
 import CropIcon from '@material-ui/icons/Crop';
 import ArrowBackOutlinedIcon from '@material-ui/icons/ArrowBackOutlined';
 
-const TweetBox = () => {
+const TweetBox = ({ addNewPost }) => {
     const [{ user }] = useStateValue();
     const { displayName } = user;
     const [profile, setProfile] = useState(null);
@@ -65,8 +65,10 @@ const TweetBox = () => {
                         likes: [],
                         senderId: user.id,
                         created_at: new Date().toISOString(),
-                    }).then(() => {
+                    }).then((response) => {
                         resetTweetForm();
+                        // console.log({response})
+                        addNewPost(response.data.created_post);
                     }).catch(err => {
                         setIsLoading(false);
                         console.error('Error posting tweet:', err);
@@ -85,8 +87,9 @@ const TweetBox = () => {
                 likes: [],
                 senderId: user.id,
                 created_at: new Date().toISOString(),
-            }).then(() => {
+            }).then((response) => {
                 resetTweetForm();
+                addNewPost(response.data.created_post);
             }).catch(err => {
                 setIsLoading(false);
                 console.error('Error posting tweet:', err);

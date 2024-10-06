@@ -1,6 +1,6 @@
 import React from 'react'
 import FlipMove from 'react-flip-move'
-import Comment from '../Comment/Comment'
+import Comment from '../Comment/Comment1'
 
 const Comments = ({comments, statusUsername}) => {
     return (

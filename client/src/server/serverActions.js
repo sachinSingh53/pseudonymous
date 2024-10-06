@@ -28,9 +28,10 @@ export const unfollow = (userId, followId) => {
     })  
 }
 
-export const deletePost = async (postId) => {
+export const deletePost = async (postId,deletePost) => {
     try {
         await axios.delete(`/post/${postId}`);
+        deletePost(postId)
     } catch (error) {
         console.error('Error deleting post:', error);
     }

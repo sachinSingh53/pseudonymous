@@ -57,15 +57,24 @@ const Feed = () => {
                     setPosts(response.data.posts);
                     setLoading(false);
                 }
+                // return response.data
             } catch (error) {
                 console.error('Error fetching posts:', error);
             }
         };
 
         fetchPosts();
+        
 
         return () => mounted = false;
     }, [following, user.id]);
+
+    const addNewPost = (newPost) => {
+        setPosts([newPost, ...posts]);  // Add the new post to the beginning of the posts array
+    };
+    const removePost = (postId) => {
+        setPosts(posts.filter(post => post.id !== postId));  // Assuming post._id is the post's unique identifier
+    };
 
     return (
         <div className='feed'>
@@ -76,12 +85,12 @@ const Feed = () => {
                 <h2>Home</h2>
             </div>
 
-            <TweetBox />
+            <TweetBox addNewPost={addNewPost}/>
 
             {loading && <div className="feed__loader"><Loader /></div>}
             
 
-            <Posts posts={posts} />
+            <Posts posts={posts} removePost = {removePost} />
         </div>
     );
 };

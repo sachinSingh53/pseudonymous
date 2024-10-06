@@ -10,7 +10,7 @@ import Login from './components/Login/Login1'
 import Profile from './components/Profile/Profile'
 import ProfileWidgets from './components/ProfileWidgets/ProfileWidgets'
 import ProfileFollow  from './components/ProfileFollow/ProfileFollow'
-import Status from './components/Status/Status'
+import Status from './components/Status/Status1'
 import CommentThread from './components/CommentThread/CommentThread'
 import StatusWidget from './components/StatusWidget/StatusWidget'
 

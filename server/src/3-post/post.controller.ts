@@ -24,6 +24,14 @@ export class PostController {
         })
     }
 
+    @Get('/:postId')
+    async getPostById(@Param('postId',ParseIntPipe) postId:number){
+        const post = await this.postService.findPostByID(postId);
+        return decamelizeKeys({
+            post
+        })
+    }
+
     @Get('/:postId/comments')
     async getPostComments(@Param('postId',ParseIntPipe) postId:number){
         const comments = await this.postService.findPostComments(postId);

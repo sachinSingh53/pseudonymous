@@ -1,15 +1,14 @@
 import React, { useState, forwardRef, useEffect } from 'react';
 import { Avatar } from '@material-ui/core';
-import { useHistory } from 'react-router';
-
-import FooterIcon from './FooterIcon';
-import Reply from '../Reply/Reply1';
-import Like from './Like';
+import { Link } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router';
+import FooterIcon from '../Post/FooterIcon';
+import ReplyComment from '../ReplyComment/ReplyComment';
+import Like from '../Post/Like';
 import Popover from '@material-ui/core/Popover';
 import Modal from '../../elements/Modal/Modal';
 import util from '../../helpers/timeDifference';
 import { convertTimestampToLocaleString } from '../../helpers/convertTimestampToLocaleString';
-
 import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
 import RepeatIcon from '@material-ui/icons/Repeat';
@@ -25,88 +24,112 @@ import PostAddIcon from '@material-ui/icons/PostAdd';
 import PersonAddDisabledIcon from '@material-ui/icons/PersonAddDisabled';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import CloseIcon from '@material-ui/icons/Close';
-
-import './Post.css';
-import axios from '../../axios';  // Assuming axios is already set up with a base URL
+import '../Post/Post.css';
 import { useStateValue } from '../../contexts/StateContextProvider';
-import { like, unlike, follow, unfollow, deletePost } from '../../server/serverActions';
+import axios from '../../axios'; // Axios for external API communication
+import { likeComment, unlikeComment, follow, unfollow, deleteComment } from '../../server/serverActions';
 
-const Post = forwardRef(({
-  altText,
+const Comment = forwardRef(({
+  commentAltText,
   text,
   image,
-  created_at,
+  timestamp,
   senderId,
-  postId,
+  commentId,
   likes,
-  removePost
+  statusUsername
 }, ref) => {
-
   const history = useHistory();
-  const date = convertTimestampToLocaleString(created_at);
+  const { postId } = useParams();
+  const date = convertTimestampToLocaleString(timestamp);
 
   const [anchorEl, setAnchorEl] = useState(null);
   const onClickExpand = (event) => setAnchorEl(event.currentTarget);
   const handleClose = () => setAnchorEl(null);
   const open = Boolean(anchorEl);
   const id = open ? 'post-popover' : undefined;
-  const [isOpenModal, setIsOpenModal] = useState(false);
 
   const [{ user }] = useStateValue();
-  const [profile, setProfile] = useState({
-    id: '', displayName: '', photoURL: '', verified: false, username: '', followers: [], following: []
-  });
-  const [ownProfile, setOwnProfile] = useState(null);
+  const [profile, setProfile] = useState({ id: '', displayName: '', photoURL: '', verified: false, username: '', followers: [], following: [] });
   const { displayName, username, photoURL, verified } = profile;
+  const [ownProfile, setOwnProfile] = useState(null);
+  const [originalPost, setOriginalPost] = useState(null);
+  const [originalPostSender, setOriginalPostSender] = useState(null);
 
-  const [comments, setComments] = useState([]);
+  const [isOpenModal, setIsOpenModal] = useState(false);
+  const setIsOpenParentModal = state => setIsOpenModal(state);
+
+  const [threadComments, setThreadComments] = useState([]);
+  const redirectToThread = commentId => history.push(`/status/${postId}/${commentId}`);
+
   const [isFollowing, setIsFollowing] = useState(false);
 
-  const redirectToStatus = postId => history.push(`/status/${postId}`);
-
-  // Fetch own profile and the post sender profile from external API
+  // Fetching own profile, sender profile, thread comments, and original post
   useEffect(() => {
-    const fetchProfiles = async () => {
-      try {
-        const ownProfileRes = await axios.get(`/users/${user.id}`);
+    let mounted = true;
 
-        setOwnProfile({ id: user.id, ...ownProfileRes.data.user });
-        const senderProfileRes = await axios.get(`/users/${senderId}`);
-        console.log({ senderProfileRes })
-        setProfile(senderProfileRes.data.user);
-      } catch (error) {
-        console.error('Error fetching profile data:', error);
-      }
-    };
+    // Fetch user's own profile from the external backend
+    axios.get(`/api/users/${user.id}`)
+      .then(response => {
+        if (mounted) {
+          setOwnProfile(response.data);
+        }
+      })
+      .catch(error => console.error(error));
 
-    fetchProfiles();
-  }, [user.id, senderId]);
+    // Fetch the sender's profile
+    axios.get(`/api/users/${senderId}`)
+      .then(response => {
+        if (mounted) {
+          setProfile(response.data);
+        }
+      })
+      .catch(error => console.error(error));
 
-  // Fetch comments for the post from external API
+    // Fetch comments from the external backend
+    axios.get(`/api/posts/${postId}/comments/${commentId}/thread`)
+      .then(response => {
+        if (mounted) {
+          setThreadComments(response.data);
+        }
+      })
+      .catch(error => console.error(error));
+
+    // Fetch original post
+    axios.get(`/api/posts/${postId}`)
+      .then(response => {
+        if (mounted) {
+          setOriginalPost(response.data);
+        }
+      })
+      .catch(error => console.error(error));
+
+    return () => mounted = false;
+  }, [postId, commentId, senderId, user.id]);
+
   useEffect(() => {
-    const fetchComments = async () => {
-      try {
-        const response = await axios.get(`/post/${postId}/comments`);
-        setComments(response.data.comments);
-      } catch (error) {
-        console.error('Error fetching comments:', error);
-      }
-    };
+    let mounted = true;
 
-    fetchComments();
-  }, [postId]);
+    if (originalPost) {
+      axios.get(`/api/users/${originalPost.senderId}`)
+        .then(response => {
+          if (mounted) {
+            setOriginalPostSender(response.data);
+          }
+        })
+        .catch(error => console.error(error));
+    }
 
-  // Check if the user is following the post sender
+    return () => mounted = false;
+  }, [originalPost]);
+
   useEffect(() => {
     if (profile) {
       setIsFollowing(profile.followers.includes(user.id));
     }
   }, [profile, user.id]);
 
-  // Modal callbacks
-  const callbackForModal = () => { };
-  const setIsOpenParentModal = state => setIsOpenModal(state);
-  // console.log('Sachin',created_at);
+  const callbackForModal = () => {};
 
   return (
     <>
@@ -118,19 +141,18 @@ const Post = forwardRef(({
         Icon={CloseIcon}
         ButtonText=''
       >
-        <Reply
-          props={{
-            altText,
-            text,
-            image,
-            created_at,
-            senderId,
-            postId,
-            likes
-          }}
+        <ReplyComment props={{
+          threadAlttext: commentAltText,
+          image,
+          timestamp,
+          senderId,
+          commentId,
+          likes
+        }}
           profile={profile}
           ownProfile={ownProfile}
           setIsOpenParentModal={setIsOpenParentModal}
+          originalPostSender={originalPostSender}
         />
       </Modal>
 
@@ -144,7 +166,7 @@ const Post = forwardRef(({
               <h3>{displayName} {' '}
                 <span className='post__headerSpecial'>
                   {verified && <VerifiedUserIcon className='post__badge' />}
-                  @{`${username} . ${created_at && util.timeDiff(date)}`}
+                  @{`${username} . ${timestamp && util.timeDiff(date)}`}
                 </span>
               </h3>
               <div className="post__headerExpandIcon" aria-describedby={id} variant="contained" onClick={onClickExpand}>
@@ -167,10 +189,9 @@ const Post = forwardRef(({
               >
                 <ul className="post__expandList">
                   {
-
                     senderId === user.id ?
                       <>
-                        <li onClick={() => deletePost(postId, removePost)}>
+                        <li onClick={() => deleteComment(postId, commentId)}>
                           <div className='delete'><DeleteOutlineIcon /></div><h3 className="delete">Delete</h3>
                         </li>
                         <li>
@@ -212,29 +233,25 @@ const Post = forwardRef(({
               </Popover>
             </div>
 
-            <div className="post__headerDescription" onClick={() => redirectToStatus(postId)}>
+            {statusUsername && <div className="post__replyingTo">
+              Replying To <Link to={`/profile/${statusUsername}`}>{`@${statusUsername}`}</Link>
+            </div>}
+
+            <div className="post__headerDescription" onClick={() => redirectToThread(commentId)}>
               <p> {text} </p>
             </div>
           </div>
 
-          {image.length > 0 && <img src={image} alt={altText} onClick={() => redirectToStatus(postId)} />}
+          {image.length > 0 && <img src={image} alt={commentAltText} onClick={() => redirectToThread(commentId)} />}
 
           <div className="post__footer">
-            <FooterIcon Icon={ChatBubbleOutlineIcon} value={comments.length} onClick={() => setIsOpenModal(true)} />
+            <FooterIcon Icon={ChatBubbleOutlineIcon} value={threadComments.length} onClick={() => setIsOpenModal(true)} />
             <FooterIcon Icon={RepeatIcon} value={0} />
-            {/* <Like
-              likes={likes}
-              unlikeAction={() => unlike(postId, user.id)}
-              likeAction={() => like(postId, user.id)}
-            /> */}
-
             <Like
               likes={likes}
-              postId={postId}  // Make sure to pass the postId here for API actions
-              unlikeAction={() => unlike(postId, user.id)}  // Calls the API to unlike
-              likeAction={() => like(postId, user.id)}      // Calls the API to like
+              likeAction={() => likeComment(postId, commentId, user.id)}
+              unlikeAction={() => unlikeComment(postId, commentId, user.id)}
             />
-
             <FooterIcon Icon={PublishIcon} value={0} />
           </div>
         </div>
@@ -243,4 +260,4 @@ const Post = forwardRef(({
   );
 });
 
-export default Post;
+export default Comment;
