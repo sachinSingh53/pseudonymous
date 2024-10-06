@@ -38,8 +38,8 @@ import './Reply.css';
 const Reply = ({ props, profile, ownProfile, setIsOpenParentModal }) => {
     const { displayName, username, photoURL, verified } = profile;
     console.log({profile})
-    const { timestamp, text, image, altText, postId } = props;
-    const date = convertTimestampToLocaleString(timestamp);
+    const { created_at, text, image, altText, postId } = props;
+
     const history = useHistory();
 
     const [anchorEl, setAnchorEl] = useState(null);
@@ -192,7 +192,7 @@ const Reply = ({ props, profile, ownProfile, setIsOpenParentModal }) => {
                                             {displayName}{' '}
                                             <span className="post__headerSpecial">
                                                 {verified && <VerifiedUserIcon className="post__badge" />}
-                                                {`@${username} . ${timestamp && util.timeDiff(date)}`}
+                                                {`@${username} . ${created_at && util.timeDiff(created_at)}`}
                                             </span>
                                         </h3>
                                     </div>
