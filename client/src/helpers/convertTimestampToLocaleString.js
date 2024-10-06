@@ -1,3 +1,3 @@
 export const convertTimestampToLocaleString = (timestamp) => {
-    return timestamp && new Date(timestamp.toDate()).toLocaleString([],{hour12:false})
+    return timestamp && new Date(timestamp).toLocaleString([],{hour12:false})
 }

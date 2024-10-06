@@ -42,8 +42,10 @@ const Post = forwardRef(({
   removePost
 }, ref) => {
 
+  console.log(created_at)
+
   const history = useHistory();
-  const date = convertTimestampToLocaleString(created_at);
+  // const date = convertTimestampToLocaleString(created_at); 
 
   const [anchorEl, setAnchorEl] = useState(null);
   const onClickExpand = (event) => setAnchorEl(event.currentTarget);
@@ -144,7 +146,7 @@ const Post = forwardRef(({
               <h3>{displayName} {' '}
                 <span className='post__headerSpecial'>
                   {verified && <VerifiedUserIcon className='post__badge' />}
-                  @{`${username} . ${created_at && util.timeDiff(date)}`}
+                  @{`${username} . ${created_at && util.timeDiff(created_at)}`}
                 </span>
               </h3>
               <div className="post__headerExpandIcon" aria-describedby={id} variant="contained" onClick={onClickExpand}>

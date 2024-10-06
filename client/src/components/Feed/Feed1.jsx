@@ -76,6 +76,8 @@ const Feed = () => {
         setPosts(posts.filter(post => post.id !== postId));  // Assuming post._id is the post's unique identifier
     };
 
+    console.log("sachin",posts);
+
     return (
         <div className='feed'>
             <div className="feed__header">
@@ -91,6 +93,10 @@ const Feed = () => {
             
 
             <Posts posts={posts} removePost = {removePost} />
+
+
+
+            
         </div>
     );
 };

@@ -21,7 +21,7 @@ const Posts = ({ posts,removePost }) => {
                             text={post.text}
                             avatar={post.avatar}
                             image={post.image}
-                            creaated_at={post.created_at}
+                            created_at={post.created_at}
                             likes={post.likes}
                             removePost={removePost}
                         />
