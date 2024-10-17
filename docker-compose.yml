@@ -21,5 +21,16 @@ services:
       - "3000:3000"
     volumes:
       - ./client:/app
+    
+  backend:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./server:/app
+    environment:
+      DATABASE_URL: "postgresql://sachin:api@localhost:5432/pseudonymous?schema=public"
 
   
