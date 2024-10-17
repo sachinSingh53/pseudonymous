@@ -115,6 +115,14 @@ export class PostService {
             data
         })
     }
+
+    deleteThreadComment(id:number){
+        return this.prismaService.threadComment.delete({
+            where:{
+                id
+            }
+        })
+    }
     
    
     

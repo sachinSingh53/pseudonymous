@@ -63,9 +63,9 @@ const ThreadComment = forwardRef(({
       fetchUserProfile()
    }, [senderId])
 
-   const deleteMyThreadComment = async (postId, commentId, threadCommentId) => {
+   const deleteMyThreadComment = async (threadCommentId) => {
       try {
-         await axios.delete(`/api/posts/${postId}/comments/${commentId}/threadComments/${threadCommentId}`)
+         await axios.delete(`/post/threadComments/${threadCommentId}`)
       } catch (error) {
          console.error('Error deleting thread comment:', error)
       }
@@ -109,7 +109,7 @@ const ThreadComment = forwardRef(({
                       {
                          senderId === user.id?
                          <>
-                            <li onClick={()=>deleteMyThreadComment(postId, commentId, threadCommentId)}>
+                            <li onClick={()=>deleteMyThreadComment(threadCommentId)}>
                                <div className='delete'><DeleteOutlineIcon /></div><h3 className="delete">Delete</h3>
                             </li>
                             <li>

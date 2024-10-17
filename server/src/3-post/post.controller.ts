@@ -86,7 +86,7 @@ export class PostController {
         })
     }
 
-    @Post(':postId/comments/:commentId/reply')
+    @Post('/:postId/comments/:commentId/reply')
     async addThreadComment(
         @Param('postId',ParseIntPipe) postId:number,
         @Param('commentId',ParseIntPipe) commentId:number,
@@ -98,6 +98,16 @@ export class PostController {
         })
     }
 
+    @Delete('/threadComments/:threadCommentId')
+    async removeThreadComments(
+        @Param('threadCommentId',ParseIntPipe) threadCommentId:number
+    ){
+        await this.postService.deleteThreadComment(threadCommentId);
+
+        return decamelizeKeys({
+            message:'Thread comment deleted successfully'
+        })
+    }
     
 
     
