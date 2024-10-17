@@ -12,7 +12,7 @@ COPY package*.json ./
 RUN npm install -g @nestjs/cli
 
 # Install dependencies
-RUN npm install --legacy-peer-deps
+RUN npm install 
 
 # Copy Prisma schema files and run Prisma generate inside the container
 COPY prisma ./prisma
