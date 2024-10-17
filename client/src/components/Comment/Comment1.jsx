@@ -3,7 +3,7 @@ import { Avatar } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { useHistory, useParams } from 'react-router';
 import FooterIcon from '../Post/FooterIcon';
-import ReplyComment from '../ReplyComment/ReplyComment';
+import ReplyComment from '../ReplyComment/ReplyComment1';
 import Like from '../Post/Like';
 import Popover from '@material-ui/core/Popover';
 import Modal from '../../elements/Modal/Modal';
@@ -92,7 +92,7 @@ const Comment = forwardRef(({
     axios.get(`/post/${postId}/comments/${commentId}/thread`)
       .then(response => {
         if (mounted) {
-          setThreadComments(response.data);
+          setThreadComments(response.data.thread_comments);
         }
       })
       .catch(error => console.error(error));
@@ -101,7 +101,7 @@ const Comment = forwardRef(({
     axios.get(`/post/${postId}`)
       .then(response => {
         if (mounted) {
-          setOriginalPost(response.data);
+          setOriginalPost(response.data.post);
         }
       })
       .catch(error => console.error(error));

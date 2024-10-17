@@ -29,13 +29,6 @@ model User{
   updated_at DateTime @updatedAt
 }
 
-//  altText     : altText,
-//             text        : tweetMessage,
-//             image       : '',
-//             likes       : [],
-//             senderId    : user.id,
-//             timestamp   : firebase.firestore.FieldValue.serverTimestamp()
-
 model Post{
   id Int @default(autoincrement()) @id
   text String 
@@ -61,4 +54,17 @@ model Comment{
   updated_at DateTime @updatedAt
   // post       Post     @relation(fields: [postId], references: [id])
 
+}
+
+model ThreadComment{
+  id Int @default(autoincrement()) @id
+  commentId Int 
+  text String
+  altText String
+  image String
+  likes Int[]
+  senderId Int 
+  postId Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }

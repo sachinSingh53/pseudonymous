@@ -2,8 +2,12 @@ import {  Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { postDTO } from './dto';
 import { commentDTO } from './dto/comment.dto';
+import { ThreadCommentDTO } from './dto/thread.comment.dto';
 
 @Injectable()
+
+
+//---------------------------------------------- post methods ------------------------------------------------------
 export class PostService {
     constructor(
         private prismaService:PrismaService
@@ -44,20 +48,6 @@ export class PostService {
         })
     }
 
-    findPostComments(postId:number){
-        return this.prismaService.comment.findMany({
-            where:{
-                postId
-            }
-        })
-    }
-
-    createComment(data){
-        return this.prismaService.comment.create({
-            data
-        })
-    }
-
     likePost(data){
         const {postId,userId} = data;
         return this.prismaService.post.update({
@@ -89,6 +79,40 @@ export class PostService {
                     set:updatedLikes
                 }
             }
+        })
+    }
+
+
+    //---------------------------------------------- comment methods ------------------------------------------------------
+
+    findPostComments(postId:number){
+        return this.prismaService.comment.findMany({
+            where:{
+                postId
+            }
+        })
+    }
+
+    createComment(data){
+        return this.prismaService.comment.create({
+            data
+        })
+    }
+
+    //---------------------------------------------- thread comment methods ------------------------------------------------------
+
+    findThreadComments(postId:number,commentId:number){
+        return this.prismaService.threadComment.findMany({
+            where:{
+                commentId,
+                postId
+            }
+        })
+    }
+
+    createThreadComment(data){
+        return this.prismaService.threadComment.create({
+            data
         })
     }
     

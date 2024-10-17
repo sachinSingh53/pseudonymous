@@ -11,7 +11,7 @@ import Profile from './components/Profile/Profile'
 import ProfileWidgets from './components/ProfileWidgets/ProfileWidgets'
 import ProfileFollow  from './components/ProfileFollow/ProfileFollow'
 import Status from './components/Status/Status1'
-import CommentThread from './components/CommentThread/CommentThread'
+import CommentThread from './components/CommentThread/CommentThread1'
 import StatusWidget from './components/StatusWidget/StatusWidget'
 
 import BottomNav from './elements/BottomNav/BottomNav'

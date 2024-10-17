@@ -6,7 +6,7 @@ import {useHistory} from 'react-router-dom'
 import Popover from '@material-ui/core/Popover'
 import FooterIcon from '../Post/FooterIcon'
 import Like from '../Post/Like'
-import ReplyComment from '../ReplyComment/ReplyComment'
+import ReplyComment from '../ReplyComment/ReplyComment1'
 import Modal from '../../elements/Modal/Modal'
 
 import {Avatar} from '@material-ui/core'

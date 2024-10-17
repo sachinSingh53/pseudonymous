@@ -4,12 +4,15 @@ import { JwtAuthGuard } from 'src/1-auth/guards/jwt-auth.guards';
 import{decamelizeKeys} from 'humps'
 import { postDTO } from './dto';
 import { commentDTO } from './dto/comment.dto';
+import { ThreadCommentDTO } from './dto/thread.comment.dto';
 
 @UseGuards(JwtAuthGuard)
 @Controller('post')
 export class PostController {
     constructor(private postService:PostService){}
 
+
+//----------------------------------------- Post routes ------------------------------------------------------
     @Post('/')
     async addPost(@Body() data:postDTO){
         const createdPost = await this.postService.createPost(data);
@@ -31,6 +34,18 @@ export class PostController {
             post
         })
     }
+
+    @Put('/like-post')
+    async likePost(@Body() data){
+        return await this.postService.likePost(data);
+    }
+
+    @Put('/:postId')
+    async unlikePost(@Body() data){
+        return this.postService.unlikePost(data)
+    }
+
+//----------------------------------------- Comment routes ------------------------------------------------------
 
     @Get('/:postId/comments')
     async getPostComments(@Param('postId',ParseIntPipe) postId:number){
@@ -56,15 +71,34 @@ export class PostController {
         return await this.postService.deletePost(postId);
     }
 
-    @Put('/like-post')
-    async likePost(@Body() data){
-        return await this.postService.likePost(data);
+    
+//----------------------------------------- Thread comment routes -----------------------------------------------------
+
+    @Get('/:postId/comments/:commentId/thread')
+    async getThreadComments(
+        @Param('postId',ParseIntPipe) postId:number,
+        @Param('commentId',ParseIntPipe) commentId:number
+    ){
+        const threadComments = await this.postService.findThreadComments(postId,commentId);
+
+        return decamelizeKeys({
+            threadComments
+        })
     }
 
-    @Put('/:postId')
-    async unlikePost(@Body() data){
-        return this.postService.unlikePost(data)
+    @Post(':postId/comments/:commentId/reply')
+    async addThreadComment(
+        @Param('postId',ParseIntPipe) postId:number,
+        @Param('commentId',ParseIntPipe) commentId:number,
+        @Body() data:ThreadCommentDTO, 
+    ){
+        const threadComment = await this.postService.createThreadComment({postId,commentId,...data});
+        return decamelizeKeys({
+            threadComment
+        })
     }
+
+    
 
     
 

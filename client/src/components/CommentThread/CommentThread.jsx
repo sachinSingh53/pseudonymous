@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import {useHistory, useParams} from 'react-router'
 import ThreadComments from '../ThreadComments/ThreadComments'
-import CommentPost from '../CommentPost/CommentPost'
+import CommentPost from '../CommentPost/CommentPost1'
 import db from '../../firebase'
 import Loader from '../../elements/Loader/Loader'
 

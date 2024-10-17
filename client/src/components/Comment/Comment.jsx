@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom'
 import {useHistory, useParams} from 'react-router'
 
 import FooterIcon from '../Post/FooterIcon'
-import ReplyComment from '../ReplyComment/ReplyComment'
+import ReplyComment from '../ReplyComment/ReplyComment1'
 import Like from '../Post/Like'
 import Popover from '@material-ui/core/Popover'
 import Modal from '../../elements/Modal/Modal'
