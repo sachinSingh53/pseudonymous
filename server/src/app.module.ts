@@ -21,7 +21,7 @@ import { PostModule } from './3-post/post.module';
     JwtModule.register({
       global: true,
       secret: process.env.JWT_SECRET,
-      // signOptions: { expiresIn: '24h' },
+      signOptions: { expiresIn: '24h' },
     }),
     UserModule,
     PostModule

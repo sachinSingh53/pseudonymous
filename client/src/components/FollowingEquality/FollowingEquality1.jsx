@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Avatar } from '@material-ui/core'
 import { useStateValue } from '../../contexts/StateContextProvider'
-import axios from 'axios' // or use fetch if preferred
+import axios from '../../axios' // or use fetch if preferred
 
 const FollowingEquality = ({ profile }) => {
     const [{ user }] = useStateValue()

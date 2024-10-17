@@ -22,6 +22,10 @@ model User{
   // dp String ?
   displayName String?
   photoURL String?
+  bio String?
+  location String?
+  wallpaper String?
+  website String?
   verified Boolean? @default(false)
   following Int[]
   followers Int []

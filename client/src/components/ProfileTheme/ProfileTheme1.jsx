@@ -13,6 +13,7 @@ import ModalImage from '../../elements/Modal/ModalImage';
 import Spinner from '../../elements/Spinner/Spinner';
 import EditProfile from '../EditProfile/EditProfile';
 import FollowingEquality from '../FollowingEquality/FollowingEquality1.jsx';
+import util from '../../helpers/timeDifference';
 
 import axios from '../../axios'; // New: Axios for HTTP requests
 import postToCloudinary from '../../helpers/postToCloudinary';
@@ -119,7 +120,7 @@ const ProfileTheme = () => {
             location,
             website,
             photoURL: finalPhoto,
-            wallpaper: finalWallpaper,
+            wallpaper: finalWallpaper||"",
           });
           setIsUpdating(false);
         } catch (error) {
@@ -220,7 +221,7 @@ const ProfileTheme = () => {
               </div>
             )}
             <div>
-              <DateRangeIcon /> <span>Sep 2020</span>
+              <DateRangeIcon /> <span>{profile.created_at && util.timeDiff(profile.created_at)}</span>
             </div>
           </div>
 
