@@ -42,7 +42,15 @@ export class PostController {
 
     @Put('/:postId')
     async unlikePost(@Body() data){
-        return this.postService.unlikePost(data)
+        return await this.postService.unlikePost(data)
+    }
+
+    @Get('/sender/:senderId')
+    async getPostBySenderId(@Param('senderId',ParseIntPipe) senderId:number){
+        const posts = await this.postService.findSenderPosts(senderId);
+        return decamelizeKeys({
+            posts
+        })
     }
 
 //----------------------------------------- Comment routes ------------------------------------------------------

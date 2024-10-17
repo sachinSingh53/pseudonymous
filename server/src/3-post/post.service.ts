@@ -82,6 +82,17 @@ export class PostService {
         })
     }
 
+    findSenderPosts(senderId:number){
+        return this.prismaService.post.findMany({
+            where:{
+                senderId
+            },
+            orderBy: {
+                created_at: 'desc',  
+            },
+        })
+    }
+
 
     //---------------------------------------------- comment methods ------------------------------------------------------
 

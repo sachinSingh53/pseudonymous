@@ -18,4 +18,13 @@ export class UserController {
         delete user.password
         return ({user})
     }
+
+
+    @Get('/u/:username')
+    async getUserByUsername(@Param('username') username:string){
+        const user = await this.userService.getUserByUsername(username);
+        return ({user});
+    }
+
+    
 }
