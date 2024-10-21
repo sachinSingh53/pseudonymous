@@ -1,25 +1,28 @@
-# Use a Node.js image suitable for your Prisma and NestJS app
+# Dockerfile
+
+# Use a Node.js base image compatible with your Prisma needs
 FROM node:21.7.1
 
-# Set the working directory
+# Set working directory
 WORKDIR /app
 
-# Copy package.json and lock file for better caching
+# Copy package.json and package-lock.json first for caching purposes
 COPY package*.json ./
 
-# Install dependencies globally and locally
-RUN npm install -g @nestjs/cli \
-    && npm install
+RUN npm install -g @nestjs/cli
 
-# Copy Prisma schema and generate client
+# Install dependencies
+RUN npm install 
+
+# Copy Prisma schema files and run Prisma generate inside the container
 COPY prisma ./prisma
 RUN npx prisma generate
 
-# Copy the rest of the app's code
+# Copy the rest of the project files
 COPY . .
 
-# Expose the application's port
+# Expose port (e.g., for NestJS app)
 EXPOSE 4000
 
-# Set the startup command
+# Start the application
 CMD ["npm", "run", "start:dev"]
