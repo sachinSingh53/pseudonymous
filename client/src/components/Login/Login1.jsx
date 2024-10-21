@@ -5,6 +5,7 @@ import Spinner from '../../elements/Spinner/Spinner';
 import validate from '../../helpers/inputValidator';
 import { actionTypes } from '../../contexts/StateReducers';
 import { useStateValue } from '../../contexts/StateContextProvider';
+import axios from '../../axios';
 
 const Login = () => {
     const [auth, setAuth] = useState(false);
@@ -64,22 +65,25 @@ const Login = () => {
         const { email, password } = loginState;
 
         try {
-            const response = await fetch('http://localhost:4000/api/v1/auth/sign-in', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+            // const response = await fetch('http://localhost:4000/api/v1/auth/sign-in', {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //     },
 
-                body: JSON.stringify({ email, password }),
-                // body:{ email, password },
-            });
+            //     body: JSON.stringify({ email, password }),
+            //     // body:{ email, password },
+            // });
+
+            const response = await axios.post('/auth/sign-in',{email,password});
 
 
-            const result = await response.json();
-            console.log(result);
+            // const result = await response.json();
+            const result = response.data;
+            console.log({response});
             
 
-            if (response.ok) {
+            if (response.status === 200) {
                 auths(result.data.user,result.token);
             } else {
                 setError(result.message || 'Invalid credentials');
@@ -96,20 +100,20 @@ const Login = () => {
         const { name, username, email, password } = signupState;
 
         try {
-            const response = await fetch('http://localhost:4000/api/v1/auth/sign-up', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ name, username, email, password }),
-                // body: { username, email, password }
-            });
+            // const response = await fetch('http://localhost:4000/api/v1/auth/sign-up', {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //     },
+            //     body: JSON.stringify({ name, username, email, password }),
+            //     // body: { username, email, password }
+            // });
+            const response  = await axios.post('/auth/sign-up');
+            console.log({response});
 
-            console.log(response);
+            const result = await response.data;
 
-            const result = await response.json();
-
-            if (response.ok) {
+            if (response.status === 200) {
                 toggleAuth(); // switch to login after successful signup
             } else {
                 setError(result.message || 'An error occurred, please try again');
