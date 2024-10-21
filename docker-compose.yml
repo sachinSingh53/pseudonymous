@@ -31,7 +31,7 @@ services:
     volumes:
       - ./server:/app
     environment:
-      DATABASE_URL: "postgresql://sachin:api@localhost:5432/pseudonymous?schema=public"
+      DATABASE_URL: "postgresql://sachin:api@postgres:5432/pseudonymous?schema=public"
       CLIENT_ID: "393558261894-ppcvuef18ekuf3n5aoq396e2h6tkv0rh.apps.googleusercontent.com"
       CLIENT_SECRET: "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"
       CALLBACk_URL: "http://localhost:4000/api/v1/auth/google/callback"

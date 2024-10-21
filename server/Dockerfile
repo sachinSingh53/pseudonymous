@@ -9,7 +9,7 @@ COPY package*.json ./
 
 # Install dependencies globally and locally
 RUN npm install -g @nestjs/cli \
-    && npm install
+    && npm install && npm i --save-dev @types/node
 
 # Copy Prisma schema and generate client
 COPY prisma ./prisma
