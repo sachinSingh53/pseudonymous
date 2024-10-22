@@ -8,7 +8,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   useRequestLogging(app);
   app.enableCors({
-    origin: 'http://localhost:3000', // Allow only your frontend origin
+    origin: ['http://localhost:3000', 'http://pseudonymous-deployment-s3.s3-website.ap-south-1.amazonaws.com'], // Allow both local and S3 hosted frontend
     credentials: true, // Allow credentials (cookies, etc.)
   });
   app.useGlobalPipes(

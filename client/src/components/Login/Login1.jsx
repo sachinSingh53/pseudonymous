@@ -83,7 +83,7 @@ const Login = () => {
             console.log({response});
             
 
-            if (response.status === 200) {
+            if (response.status === 201) {
                 auths(result.data.user,result.token);
             } else {
                 setError(result.message || 'Invalid credentials');
@@ -108,12 +108,12 @@ const Login = () => {
             //     body: JSON.stringify({ name, username, email, password }),
             //     // body: { username, email, password }
             // });
-            const response  = await axios.post('/auth/sign-up');
+            const response  = await axios.post('/auth/sign-up',{username, email, password });
             console.log({response});
 
             const result = await response.data;
 
-            if (response.status === 200) {
+            if (response.status === 201) {
                 toggleAuth(); // switch to login after successful signup
             } else {
                 setError(result.message || 'An error occurred, please try again');
