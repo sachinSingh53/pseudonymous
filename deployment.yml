@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pseudo-deployment
+  labels:
+    app: pseudo-app # Updated label to match service selector
+  namespace: nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pseudo-app # Updated to match the label in the service selector
+  template:
+    metadata:
+      labels:
+        app: pseudo-app # Updated to match the service selector
+    spec:
+      containers:
+      - name: pseudo
+        image: sachin53/k8s
+        ports:
+        - containerPort: 4000

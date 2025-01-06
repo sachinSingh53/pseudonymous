@@ -12,6 +12,11 @@ services:
       - '5432:5432'
     volumes: 
       - ./docker-volumes/postgres/data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sachin"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     
   frontend:
     build:
@@ -34,6 +39,8 @@ services:
       DATABASE_URL: "postgresql://sachin:api@postgres:5432/pseudonymous?schema=public"
       CLIENT_ID: "393558261894-ppcvuef18ekuf3n5aoq396e2h6tkv0rh.apps.googleusercontent.com"
       CLIENT_SECRET: "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"
-      CALLBACk_URL: "http://localhost:4000/api/v1/auth/google/callback"
+      CALLBACK_URL: "http://localhost:4000/api/v1/auth/google/callback"
       JWT_SECRET: "thisisverysecurejwtsecret"
-  
+    depends_on:
+      postgres:
+        condition: service_healthy

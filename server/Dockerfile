@@ -1,5 +1,5 @@
 # Use a Node.js image suitable for your Prisma and NestJS app
-FROM node:21.7.1
+FROM node:18
 
 # Set the working directory
 WORKDIR /app
@@ -8,15 +8,17 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install dependencies globally and locally
-RUN npm install -g @nestjs/cli \
-    && npm install && npm i --save-dev @types/node
+RUN npm install -g @nestjs/cli 
+RUN npm install 
+RUN npm i --save-dev @types/node
 
 # Copy Prisma schema and generate client
-COPY prisma ./prisma
-RUN npx prisma generate
+# COPY prisma ./prisma
+
 
 # Copy the rest of the app's code
 COPY . .
+RUN npx prisma generate
 
 # Expose the application's port
 EXPOSE 4000
